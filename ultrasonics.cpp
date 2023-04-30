@@ -41,7 +41,13 @@ void ultrasonics_loop(){
   static uint8_t cur_sensor = 0;
   static long last_pulse = millis();
   switch(state){
-    break; case BETWEEN_PULSES:
+    break; case ECHO_DONE:
+      // Compute and store distance
+      // 1 cnt = 4 us, 1 us = 1/1000000 s, 1 s = 340 m = 340000mm, so
+      SONARS[cur_sensor].range_mm = ((long)(echo_end - echo_begin) * 4 * 34) / (100 * 2); // divided by two since the sound has to get to the target and back.
+      state = BETWEEN_PULSES;
+      /* Fallthrough */
+    case BETWEEN_PULSES: 
       if (millis() - last_pulse < ULTRASONIC_RATE){ return; } // Wait until time for next pulse
       // Setup ICR module to capture rising edge of ECHO
       TCCR1B |= _BV(ICES1); // Edge select rising
@@ -52,24 +58,17 @@ void ultrasonics_loop(){
       cur_sensor = (cur_sensor + 1) % ultrasonics_count;
       last_pulse = millis();
       *(SONARS[cur_sensor].port) |= _BV(SONARS[cur_sensor].pin);
-      delayMicroseconds(100);
+      delayMicroseconds(10);
       *(SONARS[cur_sensor].port) &= ~_BV(SONARS[cur_sensor].pin);
       state = PULSE_SENT;
     break; 
-    case PULSE_SENT:   /* Waiting for interrupt */
-    case ECHO_ONGOING: /* Intentional case fallthrough */
+    case PULSE_SENT:   /* Fallthrough */
+    case ECHO_ONGOING: /* Waiting for interrupt */
       if (millis() - last_pulse < ULTRASONIC_RATE){ return; } // Do nothing if timeout hasn't elapsed
       // Timeout in case sensor becomes disconnected or doesn't recieve the trigger pulse.
       TIMSK1 &= ~_BV(ICIE1); // Mask interrupt
       SONARS[cur_sensor].range_mm = -1; // Indicate error
       state = BETWEEN_PULSES;
-      
-    break; case ECHO_DONE:
-      // Compute and store distance
-      // 1 cnt = 4 us, 1 us = 1/1000000 s, 1 s = 340 m = 340000mm, so
-      SONARS[cur_sensor].range_mm = ((long)(echo_end - echo_begin) * 4 * 34) / (100 * 2); // divided by two since the sound has to get to the target and back.
-      state = BETWEEN_PULSES;
-    
   }
 }
 

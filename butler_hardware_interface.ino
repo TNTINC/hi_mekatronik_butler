@@ -5,7 +5,7 @@
  */
 
 #include "encoders.h"
-
+#include "pwmout.h"
 
 /* Settings */
 #define CMD_MAXLEN 32
@@ -25,10 +25,14 @@ void run_command(char* cmd_buf);
 /* Debugging command, just prints argc and argv */
 void cmd_print(uint8_t argc, int* argv);
 
+/* Set PWM channel arg0 to 8-bit duty cycle value arg1 */
+void cmd_pwmout(uint8_t argc, int* argv);
+
 
 void setup() {
   Serial.begin(115200);
   encoders_init();
+  pwmout_init();
 }
 
 void loop() {
@@ -60,7 +64,7 @@ void loop() {
       }
     }
 
-    
+
 
   }
 }
@@ -77,14 +81,24 @@ void run_command(char* cmd_buf){
   }
 
   switch(cmd) {
-    break; case 'p': cmd_print(argc, argv); // Print, for debugging
-    break; case 'e': { // Encoders, print encoder values
+    // Print, for debugging
+    break; case 'p': cmd_print(argc, argv); 
+    
+    // Encoders, print encoder values
+    break; case 'e': { 
       long e1, e2;
       encoders_read(&e1, &e2);
       Serial.print(e1);
       Serial.print(" ");
       Serial.println(e2);
     }
+
+    // Output pwm, set encoder channel arg0 to duty cycle arg1
+    break; case 'o': {
+      cmd_pwmout(argc, argv);
+    }
+
+    // Default
     break; default:
       Serial.println("Unknown command");
   }
@@ -117,4 +131,17 @@ void cmd_print(uint8_t argc, int* argv){
     Serial.print(argv[i]);
   }
   Serial.println("\nOK");
+}
+
+void cmd_pwmout(uint8_t argc, int* argv){
+  if(argc != 2){ Serial.print("Invalid arguments"); return; }
+  uint8_t duty = 0;
+  if (argv[1] < 0){ 
+    duty = 0; 
+  } else if (argv[1] > 255) {
+    duty = 255;
+  } else {
+    duty = (uint8_t)(argv[1]);
+  }
+  pwmout_set(argv[0], duty);
 }

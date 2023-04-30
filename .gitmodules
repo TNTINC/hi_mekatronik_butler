@@ -1,0 +1,3 @@
+[submodule "src/Adafruit-PWM-Servo-Driver-Library"]
+	path = src/Adafruit-PWM-Servo-Driver-Library
+	url = https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library.git

@@ -6,6 +6,7 @@
 
 #include "encoders.h"
 #include "pwmout.h"
+#include "ultrasonics.h"
 
 /* Settings */
 #define CMD_MAXLEN 32
@@ -33,40 +34,42 @@ void setup() {
   Serial.begin(115200);
   encoders_init();
   pwmout_init();
+  ultrasonics_init();
 }
 
 void loop() {
-  uint8_t cb_idx = 0;       // Current index in command buffer
-  char cmd_buf[CMD_MAXLEN]; // Command buffer
-  while(true){ // Main loop
+  static uint8_t cb_idx = 0;       // Current index in command buffer
+  static char cmd_buf[CMD_MAXLEN]; // Command buffer
+  
+  // Handle serial character if available
+  register uint8_t timeout = 0;
+  while(Serial.available() && ++timeout < 15) {
+    char cur = Serial.read();
+    switch(cur) {
+      break; case '\b': // Backspace
+        cmd_buf[cb_idx] = '\0'; // New end of string
+        if(cb_idx > 0){ --cb_idx; } // Move back one, unless that would underflow
 
-    while(Serial.available()) { // Read serial data if possible
-      char cur = Serial.read();
-      switch(cur) {
-        break; case '\b': // Backspace
-          cmd_buf[cb_idx] = '\0'; // New end of string
-          if(cb_idx > 0){ --cb_idx; } // Move back one, unless that would underflow
+      break; case '\r': // CR
+        cmd_buf[cb_idx] = '\0'; // End of string
+        cb_idx = 0; // Prepare index for next command
+        run_command(cmd_buf);
+      
 
-        break; case '\r': // CR
-          cmd_buf[cb_idx] = '\0'; // End of string
-          cb_idx = 0; // Prepare index for next command
-          run_command(cmd_buf);
-        
+      break; case '\n': // LF: ignore
 
-        break; case '\n': // LF: ignore
-
-        break; default: // Normal char
-          cmd_buf[cb_idx++] = cur;
-          if(cb_idx >= CMD_MAXLEN){
-            cb_idx = 0;
-            Serial.println("Buffer overflow");
-          }
-      }
+      break; default: // Normal char
+        cmd_buf[cb_idx++] = cur;
+        if(cb_idx >= CMD_MAXLEN){
+          cb_idx = 0;
+          Serial.println("Buffer overflow");
+        }
     }
-
-
-
   }
+
+  // Poll ultrasonics
+  ultrasonics_loop();
+
 }
 
 
@@ -96,6 +99,16 @@ void run_command(char* cmd_buf){
     // Output pwm, set encoder channel arg0 to duty cycle arg1
     break; case 'o': {
       cmd_pwmout(argc, argv);
+    }
+
+    // Ultrasonics, print latest ultrasonic sensor values
+    break; case 'u': {
+      Serial.print(ultrasonics_read(0));
+      for(uint8_t i = 1; i < ultrasonics_count; i++){
+        Serial.print(" ");
+        Serial.print(ultrasonics_read(i));
+      }
+      Serial.println();
     }
 
     // Default

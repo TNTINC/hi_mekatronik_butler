@@ -1,6 +1,5 @@
 #ifndef encoders_h_
 #define encoders_h_
-#include <Arduino.h>
 
 /* Read two quadrature encoders using a polling interrupt. 
  * Hardware resources used: Timer2 */
@@ -21,7 +20,6 @@
 #define E2B PD5
 #define E2B_DDR DDRD
 #define E2B_PIN PIND
-
 
 // Sets up timer2 and starts regularly reading encoder values.
 void encoders_init();

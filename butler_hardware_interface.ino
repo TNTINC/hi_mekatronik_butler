@@ -7,6 +7,7 @@
 #include "encoders.h"
 #include "pwmout.h"
 #include "ultrasonics.h"
+#include "motors.h"
 
 /* Settings */
 #define CMD_MAXLEN 32
@@ -29,11 +30,15 @@ void cmd_print(uint8_t argc, int* argv);
 /* Set PWM channel arg0 to 8-bit duty cycle value arg1 */
 void cmd_pwmout(uint8_t argc, int* argv);
 
+/* Set motor pwm duty and direction arg0: m1, arg1: m2. (-4095 tp 4095) */
+void cmd_motorpwm(uint8_t argc, int* argv);
+
 
 void setup() {
   Serial.begin(115200);
   encoders_init();
   pwmout_init();
+  motors_init();
   ultrasonics_init();
 }
 
@@ -111,6 +116,11 @@ void run_command(char* cmd_buf){
       Serial.println();
     }
 
+    // Motors, set motor pwm values -4095 to 4095
+    break; case 'm': {
+      cmd_motorpwm(argc, argv);
+    }
+
     // Default
     break; default:
       Serial.println("Unknown command");
@@ -146,15 +156,21 @@ void cmd_print(uint8_t argc, int* argv){
   Serial.println("\nOK");
 }
 
+
 void cmd_pwmout(uint8_t argc, int* argv){
-  if(argc != 2){ Serial.print("Invalid arguments"); return; }
-  uint8_t duty = 0;
+  if(argc != 2){ Serial.println("Invalid arguments"); return; }
+  uint16_t duty = argv[1];
   if (argv[1] < 0){ 
     duty = 0; 
-  } else if (argv[1] > 255) {
-    duty = 255;
-  } else {
-    duty = (uint8_t)(argv[1]);
+  } else if (argv[1] > PWM_MAX_DUTY) {
+    duty = PWM_MAX_DUTY;
   }
   pwmout_set(argv[0], duty);
+}
+
+
+void cmd_motorpwm(uint8_t argc, int* argv){
+  if(argc != 2){Serial.println("Invalid arguments"); return; }
+  motors_set_pwm(argv[0], argv[1]);
+  Serial.println("OK");
 }

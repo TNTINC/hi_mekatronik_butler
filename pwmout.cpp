@@ -7,7 +7,7 @@ void pwmout_init() {
   pwm.setPWMFreq(440);
 }
 
-void pwmout_set(uint8_t channel, uint8_t duty) {
+void pwmout_set(uint8_t channel, uint16_t duty) {
   // PCA duty is 12-bit 0-4095
-  pwm.setPin(channel, ((uint16_t)duty) << 3);
+  pwm.setPin(channel, duty);
 }

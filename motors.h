@@ -24,6 +24,10 @@ void motors_init();
  */
 void motors_set_pwm(int16_t m1, int16_t m2);
 
+/*
+ * Call regularly, Ensures motors time out if no commands are received.
+*/
+void motors_loop();
 
 
 #endif

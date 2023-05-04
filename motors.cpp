@@ -12,8 +12,18 @@ void motors_init(){
   M2_DIR_DDR |= _BV(M2_DIR_PIN);
 }
 
+namespace {
+  static motors_last_command = 0;
+  static const MOTOR_TIMEOUT_MS = 1000;
+}
+void motors_loop(){
+  if(millis() - motors_last_command >= MOTOR_TIMEOUT_MS){ // Timeout, stop.
+    motors_set_pwm(0, 0);
+  }
+}
 
 void motors_set_pwm(int16_t m1_duty, int16_t m2_duty){
+  motors_last_command = millis();
   if(m1_duty < 0){ 
     M1_DIR_PORT |= _BV(M1_DIR_PIN);
     m1_duty *= -1;    

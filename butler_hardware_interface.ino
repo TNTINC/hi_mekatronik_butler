@@ -75,6 +75,9 @@ void loop() {
   // Poll ultrasonics
   ultrasonics_loop();
 
+  // Run motor control loop
+  motors_loop();
+
 }
 
 

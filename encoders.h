@@ -5,11 +5,11 @@
  * Hardware resources used: Timer2 */
 
 // Pin definitions. (See https://www.circuito.io/blog/arduino-uno-pinout/ for mapping from arduino pin numbers)
-#define E1A PD2
+#define E1A PD3
 #define E1A_DDR DDRD
 #define E1A_PIN PIND
 
-#define E1B PD3
+#define E1B PD2
 #define E1B_DDR DDRD
 #define E1B_PIN PIND
 

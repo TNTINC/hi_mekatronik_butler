@@ -2,6 +2,7 @@
 #define MOTORS_H_
 /* Drive the motors using the PCA9685 to generate PWM signals fed to the G2 motor controller */
 
+#include <Arduino.h>
 #include "pwmout.h"
 #include "avr/io.h"
 
@@ -23,6 +24,11 @@ void motors_init();
  * m1 and m2 should be in the range -4095 to 4095.
  */
 void motors_set_pwm(int16_t m1, int16_t m2);
+
+/*
+ * Set target direction and speed in ticks / cycle.
+ */
+void motors_set_pid(long m1, long m2);
 
 /*
  * Call regularly, Ensures motors time out if no commands are received.

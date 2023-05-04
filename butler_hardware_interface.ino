@@ -33,6 +33,9 @@ void cmd_pwmout(uint8_t argc, int* argv);
 /* Set motor pwm duty and direction arg0: m1, arg1: m2. (-4095 tp 4095) */
 void cmd_motorpwm(uint8_t argc, int* argv);
 
+/* Set motor pid velocity setpoint in counts/cycle (pid rate 10hz, enc 12CPR) */
+void cmd_motorpid(uint8_t argc, int* argv);
+
 
 void setup() {
   Serial.begin(115200);
@@ -119,7 +122,7 @@ void run_command(char* cmd_buf){
       Serial.println();
     }
 
-    // Motors, set motor pwm values -4095 to 4095
+    // Motors, set motor pid velocities
     break; case 'm': {
       cmd_motorpwm(argc, argv);
     }
@@ -175,5 +178,11 @@ void cmd_pwmout(uint8_t argc, int* argv){
 void cmd_motorpwm(uint8_t argc, int* argv){
   if(argc != 2){Serial.println("Invalid arguments"); return; }
   motors_set_pwm(argv[0], argv[1]);
+  Serial.println("OK");
+}
+
+void cmd_motorpid(uint8_t argc, int* argv){
+  if(argc != 2){Serial.println("Invalid arguments"); return; }
+  motors_set_pid(argv[0], argv[1]);
   Serial.println("OK");
 }

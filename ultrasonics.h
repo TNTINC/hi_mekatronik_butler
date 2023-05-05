@@ -22,7 +22,9 @@ static struct {
 static constexpr uint8_t ultrasonics_count = sizeof(SONARS) / sizeof(SONARS[0]);
 
 // Minimum time delay between ultrasonic pulses in milliseconds, datasheet recommends 60ms
-static const uint16_t ULTRASONIC_RATE = 40;
+static const long ULTRASONIC_RATE = 60;
+// Length of echo pulse to consider distant.
+static const long ECHO_TIMEOUT = 40;
 
 void ultrasonics_init();
 

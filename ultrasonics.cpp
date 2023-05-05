@@ -19,6 +19,10 @@ void ultrasonics_init(){
     *(SONARS[i].port) &= ~_BV(SONARS[i].pin);
     *(SONARS[i].ddr) |= _BV(SONARS[i].pin);
   }
+
+  // Set power pin to output high
+  DDRB |= _BV(PB4);
+  PORTB |= _BV(PB4);
 }
 
 long ultrasonics_read(uint8_t ch){
@@ -40,6 +44,7 @@ namespace {
 void ultrasonics_loop(){
   static uint8_t cur_sensor = 0;
   static long last_pulse = millis();
+  static long echo_timeout_start = millis();
   switch(state){
     break; case ECHO_DONE:
       // Compute and store distance
@@ -48,7 +53,7 @@ void ultrasonics_loop(){
       state = BETWEEN_PULSES;
       /* Fallthrough */
     case BETWEEN_PULSES: 
-      if (millis() - last_pulse < ULTRASONIC_RATE){ return; } // Wait until time for next pulse
+      if ((long)millis() - last_pulse < ULTRASONIC_RATE){ return; } // Wait until time for next pulse
       // Setup ICR module to capture rising edge of ECHO
       TCCR1B |= _BV(ICES1); // Edge select rising
       TIFR1 |= _BV(ICF1); // Clear any pending interrupt
@@ -62,12 +67,24 @@ void ultrasonics_loop(){
       *(SONARS[cur_sensor].port) &= ~_BV(SONARS[cur_sensor].pin);
       state = PULSE_SENT;
     break; 
-    case PULSE_SENT:   /* Fallthrough */
-    case ECHO_ONGOING: /* Waiting for interrupt */
-      if (millis() - last_pulse < ULTRASONIC_RATE){ return; } // Do nothing if timeout hasn't elapsed
-      // Timeout in case sensor becomes disconnected or doesn't recieve the trigger pulse.
+    case PULSE_SENT:
+      echo_timeout_start = millis();
+      if (millis() - last_pulse < 5){return;}
+      // If sensor doesn't set echo high in ~5ms then its likely disconnected
       TIMSK1 &= ~_BV(ICIE1); // Mask interrupt
       SONARS[cur_sensor].range_mm = -1; // Indicate error
+      state = BETWEEN_PULSES;
+    break; case ECHO_ONGOING: /* Waiting for interrupt */
+      if (millis() - last_pulse < ECHO_TIMEOUT){ return; } // Do nothing if timeout hasn't elapsed
+      // Timeout because the sensors will wait forever if they don't hear an echo (due to too far distance).
+      TIMSK1 &= ~_BV(ICIE1); // Mask interrupt
+      SONARS[cur_sensor].range_mm = 5000; // Indicate out-of-range
+      // Try to fix a hung sensor by driving the power pin low for a moment.
+      PORTB &= ~_BV(PB4);
+      delayMicroseconds(100);
+      PORTB |= _BV(PB4);
+      // Wait to let the sensors recover
+      //last_pulse = millis() - ULTRASONIC_RATE + 5;
       state = BETWEEN_PULSES;
   }
 }

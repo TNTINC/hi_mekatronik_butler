@@ -68,7 +68,7 @@ void motors_do_pid(){
 void motors_loop(){
   if(millis() - motors_last_command >= MOTOR_TIMEOUT_MS){ // Timeout, stop.
     motors_set_pwm(0, 0);
-    motors_set_pid(0, 0);
+    //motors_set_pid(0, 0);
   }
   if(millis() - last_pid >= PID_RATE_MS){
     last_pid = millis();
@@ -78,11 +78,13 @@ void motors_loop(){
 
 void motors_set_pwm(int16_t m1_duty, int16_t m2_duty){
   motors_last_command = millis();
+  // Flip motor 2 direction
+  m2_duty *= -1;
   if(m1_duty < 0){ 
     M1_DIR_PORT |= _BV(M1_DIR_PIN);
     m1_duty *= -1;    
  } else { M1_DIR_PORT &= ~_BV(M1_DIR_PIN); }
-  if(m2_duty > 0){ // Flip motor 2 direction 
+  if(m2_duty < 0){ 
     M2_DIR_PORT |= _BV(M2_DIR_PIN);
     m2_duty *= -1;
   } else { M2_DIR_PORT &= ~_BV(M2_DIR_PIN); }

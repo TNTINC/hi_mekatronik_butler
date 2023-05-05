@@ -114,12 +114,13 @@ void run_command(char* cmd_buf){
 
     // Ultrasonics, print latest ultrasonic sensor values
     break; case 'u': {
+      Serial.print("{"); // Start of response character
       Serial.print(ultrasonics_read(0));
       for(uint8_t i = 1; i < ultrasonics_count; i++){
         Serial.print(" ");
         Serial.print(ultrasonics_read(i));
       }
-      Serial.println();
+      Serial.println("}"); // End of response character
     }
 
     // Motors, set motor pid velocities

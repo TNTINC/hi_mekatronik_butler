@@ -1,3 +1,8 @@
+# 2023-05-12
+Merged this documentation and the butler_hardware_interface repository (the arduino code) into one.
+
+Finished first draft of report.
+
 # 2023-05-08
 Drilled the hole in the platter and mounted it with the 3d-printed parts.
 
@@ -77,7 +82,7 @@ Started charging battery 1 using Optimate ampmatic 6.
 
 Disassembled the E-stop to take measurements.
 
-Procured wireing supplies, fuses and fuseholder, and terminal blocks for LEDs.
+Procured wiring supplies, fuses and fuseholder, and terminal blocks for LEDs.
     1 and 1.5q wires and ferrules from the storage locker in the 3rd floor lab
     Bag of push in terminal blocks from dingy 3rd floot storage room
 

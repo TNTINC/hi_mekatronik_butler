@@ -27,14 +27,15 @@ void run_command(char* cmd_buf);
 /* Debugging command, just prints argc and argv */
 void cmd_print(uint8_t argc, int* argv);
 
-/* Set PWM channel arg0 to 8-bit duty cycle value arg1 */
+/* Set PWM channel arg0 to 12-bit duty cycle value arg1 (0 to 4095) */
 void cmd_pwmout(uint8_t argc, int* argv);
 
-/* Set motor pwm duty and direction arg0: m1, arg1: m2. (-4095 tp 4095) */
+/* Set motor pwm duty and direction arg0: m1, arg1: m2. (-4095 to 4095) */
 void cmd_motorpwm(uint8_t argc, int* argv);
 
-/* Set motor pid velocity setpoint in counts/cycle (pid rate 10hz, enc 12CPR) */
-void cmd_motorpid(uint8_t argc, int* argv);
+/* Set motor pid velocity setpoint in counts/cycle (pid rate 10hz, enc 12CPR)
+ * Not Implemented. */
+//void cmd_motorpid(uint8_t argc, int* argv);
 
 
 void setup() {
@@ -102,12 +103,14 @@ void run_command(char* cmd_buf){
     break; case 'e': { 
       long e1, e2;
       encoders_read(&e1, &e2);
+      Serial.print("{"); // Start of response character
       Serial.print(e1);
       Serial.print(" ");
       Serial.println(e2);
+      Serial.println("}"); // End of response character
     }
 
-    // Output pwm, set encoder channel arg0 to duty cycle arg1
+    // Output pwm, set encoder channel arg0 to duty cycle arg1 (0 to 4095)
     break; case 'o': {
       cmd_pwmout(argc, argv);
     }
@@ -123,7 +126,7 @@ void run_command(char* cmd_buf){
       Serial.println("}"); // End of response character
     }
 
-    // Motors, set motor pid velocities
+    // Motors, set motor pwm duty and direction ()
     break; case 'm': {
       cmd_motorpwm(argc, argv);
     }
@@ -173,6 +176,7 @@ void cmd_pwmout(uint8_t argc, int* argv){
     duty = PWM_MAX_DUTY;
   }
   pwmout_set(argv[0], duty);
+  Serial.println("OK");
 }
 
 
@@ -182,8 +186,10 @@ void cmd_motorpwm(uint8_t argc, int* argv){
   Serial.println("OK");
 }
 
+/*
 void cmd_motorpid(uint8_t argc, int* argv){
   if(argc != 2){Serial.println("Invalid arguments"); return; }
   motors_set_pid(argv[0], argv[1]);
   Serial.println("OK");
 }
+*/

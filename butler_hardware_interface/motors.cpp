@@ -6,7 +6,7 @@ void motors_init(){
   // Set 0 pwm
   pwmout_set(M1_PWM_CH, 0);
   pwmout_set(M2_PWM_CH, 0);
-  // Set directon <pins as outputs
+  // Set direction pins as outputs
   M1_DIR_PORT &= ~_BV(M1_DIR_PIN);
   M2_DIR_PORT &= ~_BV(M2_DIR_PIN);
   M1_DIR_DDR |= _BV(M1_DIR_PIN);
@@ -54,7 +54,7 @@ void motors_do_pid(){
   }
 
   motors_set_pwm(m1_raw, 0);
-
+/*
   Serial.print("vel: ");
   Serial.print(m1_vel);
   Serial.print(" err: ");
@@ -63,6 +63,7 @@ void motors_do_pid(){
   Serial.print(m1_I);
   Serial.print(" cmd: ");
   Serial.println(m1_raw);
+  */
 }
 
 void motors_loop(){
@@ -92,8 +93,10 @@ void motors_set_pwm(int16_t m1_duty, int16_t m2_duty){
   pwmout_set(M2_PWM_CH, m2_duty);
 }
 
+/*
 void motors_set_pid(long m1, long m2){
   motors_last_command = millis();
   m1_setpoint = m1;
   m2_setpoint = m2;
 }
+*/

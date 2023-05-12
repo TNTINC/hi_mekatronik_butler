@@ -1,6 +1,5 @@
 [Done 2/5] Ask ak about charging the lead acid batteries
 [Done 2/5] Ask ak about fuses
-[ ] Ask ak about getting an open folder in the department onedrive/sharepoint
 
 [Done 3/5] Encoder mounts
     [Done 27/4] Take measurements
@@ -12,13 +11,13 @@
 [Done 27/4] Solder headers onto arduino nano
 [Done 2/5] Wiring harness nano->motor driver (Fuses?)
 
-[ ] Nano (actually uno) software
+[Done 12/5] Nano (actually uno) software
     [Done 29/4] Serial interface
     [Done 29/4] Read encoders
     [Done 30/4] PWM via PCA9685
     [Done 30/4] Read ultrasonics
     [Failed] Motor PID
-    [ ] Documentation
+    [Done 12/5] Documentation
 
 [ ] Pi software
     [Done 28/4] Gain serial terminal access to Raspberry Pi
@@ -49,6 +48,5 @@
     [Done 5/5] Mount LED strips
     [Done 8/5] Mount platter
 
-[ ] Document the power distribution board a little better
 [ ] Make a block diagram
 [ ] Make a wiring diagram

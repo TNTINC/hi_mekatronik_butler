@@ -1,10 +1,9 @@
----
-Title: Robot Butler Project Development and Handover Report  
-Date: May 2023  
-Author: Friðfinnur M. Þrastarson, University of Iceland.  
----
+**Robot Butler Project: Development and Handover Report**
+================================================================================
+**Author:** *Friðfinnur M. Þrastarson, University of Iceland.*  
+**Date:** *May 2023*
 
-# Introduction
+## **Introduction**
 
 This handover report is intended to get you up to speed on the Robot Butler
 project, which was undertaken with the objective of transforming a
@@ -15,7 +14,7 @@ the revamped robot's capabilities. This report provides an overview of the work
 carried out, information on the final state of the robot, instructions for its
 use, and recommendations for future improvements.
 
-# Initial Assessment
+## **Initial Assessment**
 The robot was located in the robotics lab on the second floor.  
 An initial visual assessment showed that key components had been removed and it
 was not in an operable state.
@@ -55,7 +54,7 @@ and appeared to be in good condition. Turning the wheels by hand did indicate
 that the belt tension was less than optimal and that the pulley alignment could
 be improved, but it was within useable limits.
 
-# Design and planning
+## **Design and planning**
 
 Brainstorming took place shortly after the project kickoff meeting, and resulted
 in several possible goals. Their feasibility was explored and they were
@@ -100,7 +99,7 @@ caused a considerable delay in the delivery of the necessary parts
 In addition, faculty requested specifically that the drinks platter be relocated
 from the side of the robot to the top.
 
-# Implementation 
+## **Implementation**
 
 To achieve the set goals the following things were done:
 
@@ -174,7 +173,7 @@ of the robot and hosted on GitHub, in the hopes that it might be updated along
 with the robot. Currently it's accessible at \[2\] along with the source code
 and a journal.
 
-# Final State
+## **Final State**
 
 As of May 8th 2023, the robot has been fully assembled with all its components,
 including the modified platter, 3D-printed parts, ultrasonic sensors, LED
@@ -191,7 +190,7 @@ bottles, and so is useable for its intended purpose. Further work is however
 suggested to make it more capable and reliable.
 
 
-# Guide for Use
+## **Guide for Use**
 **Powering Up the Robot:**
    1. Ensure that the top emergency stop is reset.
    2. Locate the power switch on the bottom of the robot at the back, slightly
@@ -216,7 +215,7 @@ suggested to make it more capable and reliable.
    3. The main shell is fastened in three places at the bottom. Once these
       fasteners are removed, the shell too can be lifted off the chassis.
 
-# Suggested Future Work
+## **Suggested Future Work**
 Given the constraints of time, certain aspects of the project were left
 unattended. It is recommended that these be the first things any future project
 tackles:
@@ -233,7 +232,7 @@ tackles:
    tensioned to allow smoother, quieter movement and avoid premature wear.
 
 4. **Encoders and Speed Control:** Higher resolution encoders such as
-   AMT102-V's[^1] should be installed and used to implement closed-loop speed
+   AMT102-V's should be installed and used to implement closed-loop speed
    control. Without this, the robot tends to drive in circles and get stuck on
    bumps.
 
@@ -256,17 +255,16 @@ robot's capabilities:
  perhaps by setting up ROS on the raspberry pi, creating a URDF model of the
  robot, and conducting simulations in Gazebo.
 
-[^1]: <https://www.digikey.com/en/products/detail/cui-devices/AMT102-V/827015>
 
-# References
+## **References**
 \[1\] A. F. Skúlason, "Sociobot Control System Design and Prototype
 Development," BS thesis, University of Iceland, Reykjavik, Iceland, 2017.
-[Online]. Available: http://hdl.handle.net/1946/27771.
+[Online]. Available: <http://hdl.handle.net/1946/27771>.
 
 \[2\] F. M. Þrastarson, "Robot Butler Project Repository," GitHub repository.
-[Online]. Available: https://github.com/TNTINC/hi_mekatronik_butler.
+[Online]. Available: <https://github.com/fridfinnurm/hi_mekatronik_butler>.
 
-# Glossary
+## **Glossary**
 - **FOV** (Field of View) - Extent of observable world at a given moment.
 - **PCB** (Printed Circuit Board) - Board connecting electronic components.
 - **PID** (Proportional-Integral-Derivative) - Control loop feedback mechanism.

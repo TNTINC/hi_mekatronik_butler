@@ -1,0 +1,54 @@
+[Done 2/5] Ask ak about charging the lead acid batteries
+[Done 2/5] Ask ak about fuses
+[ ] Ask ak about getting an open folder in the department onedrive/sharepoint
+
+[Done 3/5] Encoder mounts
+    [Done 27/4] Take measurements
+    [Done 29/4] Design and fabricate encoder mounts
+    [Done 2/5] Reprint encoder mounts
+    [Done 3/5] Install encoder mounts
+
+[Done 27/4] Solder headers onto motor driver
+[Done 27/4] Solder headers onto arduino nano
+[Done 2/5] Wiring harness nano->motor driver (Fuses?)
+
+[ ] Nano (actually uno) software
+    [Done 29/4] Serial interface
+    [Done 29/4] Read encoders
+    [Done 30/4] PWM via PCA9685
+    [Done 30/4] Read ultrasonics
+    [Failed] Motor PID
+    [ ] Documentation
+
+[ ] Pi software
+    [Done 28/4] Gain serial terminal access to Raspberry Pi
+    [ ] Python client library for Nano software
+    [Done 5/5] Robot behavior (amble with obstacle avoidance)
+    [ ] Documentation
+
+[Done 2/5] Make LED driver
+    [Done 1/5] Schematic (Fuses?)
+    [Done 2/5] Fabricate
+    [Done 2/5] Test
+    [Done 2/5] Document 
+
+[Done 8/5] Relocate platter
+    [Done 3/5] Brainstorm and plan
+    [Done 4/5] Design extension.
+    [Done 5/5] Fabricate
+    [Done 8/5] Enlarge platter hole
+    [Done 8/5] Install
+
+[Done 5/5] 1st test assembly
+    [Done 2/5] Charge batteries
+    [Done 3/5] Install fuse holder in base
+    [Done 4/5] Mount electronics
+    [Done 4/5] Wire fuse holder, on switch, e-stop, batteries.
+
+[Done 8/5] Final assy.
+    [Done 5/5] Mount LED strips
+    [Done 8/5] Mount platter
+
+[ ] Document the power distribution board a little better
+[ ] Make a block diagram
+[ ] Make a wiring diagram
